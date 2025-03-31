@@ -1,0 +1,17 @@
+components/
+  ├── ui/
+  │   ├── Button.tsx
+  │   ├── Card.tsx
+  │   └── Input.tsx
+  ├── layout/
+  │   ├── Header.tsx
+  │   ├── Footer.tsx
+  │   └── Navbar.tsx
+  ├── sections/
+  │   ├── Hero.tsx
+  │   ├── Projects.tsx
+  │   ├── Skills.tsx
+  │   └── Contact.tsx
+  └── projects/
+      ├── ProjectCard.tsx
+      └── ProjectDetails.tsx
