@@ -1,26 +1,95 @@
-import React from 'react';
-import Navbar from './Navbar';
+'use client'
+import React, { useState, useEffect } from "react";
 
-const Header: React.FC = () => {
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: "Home", href: "#" },
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Services", href: "#services" },
+    { name: "Contact", href: "#contact" }
+  ];
+
   return (
-    <header className="py-6 px-8 flex items-center justify-between  mx-auto font-sora sticky top-0 bg-white/90 backdrop-blur-sm z-50 shadow-sm">
-      {/* Logo à gauche */}
-      <div className="logo flex items-center cursor-pointer">
-        <span className="text-3xl mr-2 text-indigo-600">𝄢</span>
-        <span className="font-bold text-xl hover:text-indigo-600 transition-colors">Personal</span>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <a
+            href="#"
+            className="text-2xl font-bold text-indigo-600 flex items-center hover:scale-105 transition-transform"
+          >
+            <span className="text-gray-900">S</span>alim
+          </a>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                className="text-gray-600 hover:text-indigo-600 hover:-translate-y-1 font-medium transition-all"
+              >
+                {item.name}
+              </a>
+            ))}
+          </nav>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              {mobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
-      
-      {/* Navigation au milieu */}
-      <Navbar />
-      
-      {/* Bouton à droite */}
-      <button 
-        className="bg-black text-white py-2.5 px-5 rounded-md flex items-center font-medium hover:bg-gray-800 transition-colors duration-300 text-sm">
-        Resume
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-      </button>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white shadow-lg">
+          <div className="px-4 py-5 space-y-3">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                className="block text-gray-600 hover:text-indigo-600 font-medium transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
